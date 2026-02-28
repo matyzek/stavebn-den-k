@@ -402,8 +402,32 @@ let project = JSON.parse(localStorage.getItem('sd_project') || '{}');
 let editId = null;
 let tempWorkers = [];
 
+// ---- SEED DATA (načte se jen při prvním otevření) ----
+function seedDemoData() {
+  if (localStorage.getItem('sd_seeded')) return;
+  const demoProject = {
+    name: 'Bytový dům Prosecká',
+    manager: 'Jan Novák',
+    investor: 'Prosecká s.r.o.',
+    start: '2025-02-03',
+  };
+  const demoEntries = [
+    { id: 'demo1', date: '2025-04-23', title: 'Betonáž stropní desky 2.NP', desc: 'Betonáž stropní desky nad 2.NP — čerpadlo, beton C25/30, tloušťka 200 mm. Bez komplikací.', weather: '⛅ Polojasno', temp: '14', workers: ['Jan Kovář', 'Petr Malý', 'Tomáš Novotný', 'Karel Beneš'], createdAt: Date.now() },
+    { id: 'demo2', date: '2025-04-22', title: 'Zdění příček 3.NP', desc: 'Zdění příček 3.NP — tvárnice Ytong 150 mm, malta Ytong. Dokončeno 70 % příček.', weather: '☀️ Slunečno', temp: '17', workers: ['Jan Kovář', 'Petr Malý', 'Tomáš Novotný'], createdAt: Date.now() - 86400000 },
+    { id: 'demo3', date: '2025-04-17', title: 'Instalace vodovodního potrubí', desc: 'Rozvody studené a teplé vody 2.NP — PPR potrubí, provedena tlaková zkouška 6 bar / 30 min.', weather: '🌧 Déšť', temp: '9', workers: ['Martin Vlček', 'Josef Horáček'], createdAt: Date.now() - 518400000 },
+    { id: 'demo4', date: '2025-04-16', title: 'Bednění stropu 2.NP', desc: 'Montáž systémového bednění Doka pro strop 2.NP. Připraveno pro betonáž.', weather: '☀️ Slunečno', temp: '16', workers: ['Jan Kovář', 'Petr Malý', 'Karel Beneš', 'Tomáš Novotný'], createdAt: Date.now() - 604800000 },
+    { id: 'demo5', date: '2025-04-14', title: 'Armování stropní desky', desc: 'Uložení výztuže stropní desky 2.NP dle projektové dokumentace. Krytí výztuže 25 mm.', weather: '☁️ Oblačno', temp: '11', workers: ['Jan Kovář', 'Petr Malý', 'Martin Vlček'], createdAt: Date.now() - 777600000 },
+  ];
+  localStorage.setItem('sd_project', JSON.stringify(demoProject));
+  localStorage.setItem('sd_entries', JSON.stringify(demoEntries));
+  localStorage.setItem('sd_seeded', '1');
+  entries = demoEntries;
+  project = demoProject;
+}
+
 // ---- INIT ----
 function init() {
+  seedDemoData();
   updateProjectDisplay();
   renderEntries();
 }
