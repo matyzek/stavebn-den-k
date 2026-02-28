@@ -265,13 +265,67 @@
       .stat-card { flex: 1 1 120px; }
       .entry-header { flex-wrap: wrap; }
     }
+
+    /* ---- LOGIN SCREEN ---- */
+    #login-screen {
+      position: fixed; inset: 0;
+      background: var(--bg);
+      z-index: 1000;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    #login-screen.hidden { display: none; }
+    .login-logo-wrap { margin-bottom: 10px; }
+    .login-logo-wrap img { height: 90px; background: #fff; border-radius: 10px; padding: 6px 14px; box-shadow: 0 2px 12px rgba(0,0,0,.1); }
+    .login-title { font-size: 1.4rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .login-sub { font-size: .85rem; color: var(--muted); margin-bottom: 28px; }
+    .user-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; width: 100%; max-width: 640px; }
+    .user-btn {
+      background: var(--card); border: 2px solid var(--border);
+      border-radius: 12px; padding: 16px 14px;
+      cursor: pointer; font-family: inherit;
+      text-align: center; transition: all .2s;
+    }
+    .user-btn:hover { border-color: var(--primary); background: #fff8f2; transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,.08); }
+    .user-btn .u-avatar {
+      width: 46px; height: 46px; border-radius: 50%;
+      background: var(--primary); color: #fff;
+      font-weight: 700; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .user-btn.admin .u-avatar { background: #2c3e50; }
+    .user-btn .u-name { font-size: .88rem; font-weight: 600; color: var(--text); }
+    .user-btn .u-role { font-size: .72rem; color: var(--muted); margin-top: 3px; }
+    .user-btn.admin .u-role { color: #2c3e50; font-weight: 600; }
+
+    /* ---- HEADER USER ---- */
+    .header-user { display: flex; align-items: center; gap: 10px; }
+    .header-user-name { font-size: .82rem; color: rgba(255,255,255,.9); font-weight: 500; }
+    .btn-logout { font-size: .78rem; color: rgba(255,255,255,.8); background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3); border-radius: 6px; padding: 4px 10px; cursor: pointer; font-family: inherit; }
+    .btn-logout:hover { background: rgba(255,255,255,.25); color: #fff; }
   </style>
 </head>
 <body>
 
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-logo-wrap">
+    <img src="logo.jpg" alt="I. Kamenická" />
+  </div>
+  <div class="login-title">Stavební deník</div>
+  <div class="login-sub">I. Kamenická stavební a obchodní firma s.r.o. — Vyberte svůj profil</div>
+  <div class="user-grid" id="user-grid"></div>
+</div>
+
 <header>
   <h1><img src="logo.jpg" alt="I. Kamenická Stavební a Obchodní Firma s.r.o." class="logo"> Stavební deník</h1>
-  <button class="header-project btn" onclick="openProjectModal()" id="project-name-display">Nastavit projekt ▾</button>
+  <div class="header-user">
+    <span class="header-user-name" id="header-user-name"></span>
+    <button class="header-project btn" onclick="openProjectModal()" id="project-name-display">Nastavit projekt ▾</button>
+    <button class="btn-logout" onclick="logout()">Odhlásit</button>
+  </div>
 </header>
 
 <div class="container">
@@ -400,6 +454,47 @@
 <div id="toast"></div>
 
 <script>
+// ---- USERS ----
+const USERS = [
+  { name: 'Jaroslav Dvořáček',  role: 'admin' },
+  { name: 'Tadeáš Zahradník',   role: 'admin' },
+  { name: 'Václav Hanzálek',    role: 'admin' },
+  { name: 'Jan Sláma',          role: 'user'  },
+  { name: 'Roman Fára',         role: 'user'  },
+  { name: 'Antonín Houser',     role: 'user'  },
+  { name: 'Ing. Lukáš Hrbek',   role: 'admin', title: 'Vedoucí pobočky' },
+];
+
+let currentUser = JSON.parse(localStorage.getItem('sd_user') || 'null');
+
+function initials(name) {
+  return name.replace(/Ing\.\s*/,'').split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+}
+
+function buildLoginScreen() {
+  const grid = document.getElementById('user-grid');
+  grid.innerHTML = USERS.map(u => `
+    <button class="user-btn ${u.role==='admin'?'admin':''}" onclick="login('${u.name}')">
+      <div class="u-avatar">${initials(u.name)}</div>
+      <div class="u-name">${u.name}</div>
+      <div class="u-role">${u.title || (u.role==='admin' ? 'Vedoucí / Admin' : 'Stavbyvedoucí')}</div>
+    </button>`).join('');
+}
+
+function login(name) {
+  currentUser = USERS.find(u => u.name === name);
+  localStorage.setItem('sd_user', JSON.stringify(currentUser));
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('header-user-name').textContent = currentUser.name;
+  renderEntries();
+}
+
+function logout() {
+  localStorage.removeItem('sd_user');
+  currentUser = null;
+  document.getElementById('login-screen').classList.remove('hidden');
+}
+
 // ---- DATA ----
 let entries = JSON.parse(localStorage.getItem('sd_entries') || '[]');
 let project = JSON.parse(localStorage.getItem('sd_project') || '{}');
@@ -433,6 +528,11 @@ function seedDemoData() {
 // ---- INIT ----
 function init() {
   seedDemoData();
+  buildLoginScreen();
+  if (currentUser) {
+    document.getElementById('login-screen').classList.add('hidden');
+    document.getElementById('header-user-name').textContent = currentUser.name;
+  }
   updateProjectDisplay();
   renderEntries();
 }
@@ -572,7 +672,12 @@ function renderEntries() {
   const search = document.getElementById('search').value.toLowerCase();
   const sort = document.getElementById('sort-select').value;
 
-  let list = entries.filter(e =>
+  // Filtr podle role — admin vidí vše, user pouze své záznamy
+  let visible = (currentUser && currentUser.role === 'user')
+    ? entries.filter(e => (e.workers || []).includes(currentUser.name))
+    : entries;
+
+  let list = visible.filter(e =>
     !search ||
     e.title.toLowerCase().includes(search) ||
     (e.desc || '').toLowerCase().includes(search) ||
