@@ -377,6 +377,10 @@
         <input type="text" id="p-manager" placeholder="Jméno a příjmení" />
       </div>
       <div class="form-group">
+        <label>Vedoucí pobočky</label>
+        <input type="text" id="p-branch" placeholder="Jméno a titul" />
+      </div>
+      <div class="form-group">
         <label>Investor</label>
         <input type="text" id="p-investor" placeholder="Název firmy nebo jméno" />
       </div>
@@ -408,6 +412,7 @@ function seedDemoData() {
   const demoProject = {
     name: 'Stavba u kulturního domu',
     manager: 'Starý Matyáš',
+    branch: 'Ing. Lukáš Hrbek',
     investor: 'I. Kamenická stavební a obchodní firma s.r.o.',
     start: '2024-03-01',
   };
@@ -440,6 +445,7 @@ function updateProjectDisplay() {
 function openProjectModal() {
   document.getElementById('p-name').value = project.name || '';
   document.getElementById('p-manager').value = project.manager || '';
+  document.getElementById('p-branch').value = project.branch || '';
   document.getElementById('p-investor').value = project.investor || '';
   document.getElementById('p-start').value = project.start || '';
   document.getElementById('project-modal').classList.add('open');
@@ -451,6 +457,7 @@ function saveProject() {
   project = {
     name: document.getElementById('p-name').value.trim(),
     manager: document.getElementById('p-manager').value.trim(),
+    branch: document.getElementById('p-branch').value.trim(),
     investor: document.getElementById('p-investor').value.trim(),
     start: document.getElementById('p-start').value,
   };
