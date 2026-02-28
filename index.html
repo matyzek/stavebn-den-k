@@ -406,17 +406,17 @@ let tempWorkers = [];
 function seedDemoData() {
   if (localStorage.getItem('sd_seeded')) return;
   const demoProject = {
-    name: 'Bytový dům Prosecká',
-    manager: 'Jan Novák',
-    investor: 'Prosecká s.r.o.',
-    start: '2025-02-03',
+    name: 'Stavba u kulturního domu',
+    manager: 'Starý Matyáš',
+    investor: 'I. Kamenická stavební a obchodní firma s.r.o.',
+    start: '2024-03-01',
   };
   const demoEntries = [
-    { id: 'demo1', date: '2025-04-23', title: 'Betonáž stropní desky 2.NP', desc: 'Betonáž stropní desky nad 2.NP — čerpadlo, beton C25/30, tloušťka 200 mm. Bez komplikací.', weather: '⛅ Polojasno', temp: '14', workers: ['Jan Kovář', 'Petr Malý', 'Tomáš Novotný', 'Karel Beneš'], createdAt: Date.now() },
-    { id: 'demo2', date: '2025-04-22', title: 'Zdění příček 3.NP', desc: 'Zdění příček 3.NP — tvárnice Ytong 150 mm, malta Ytong. Dokončeno 70 % příček.', weather: '☀️ Slunečno', temp: '17', workers: ['Jan Kovář', 'Petr Malý', 'Tomáš Novotný'], createdAt: Date.now() - 86400000 },
-    { id: 'demo3', date: '2025-04-17', title: 'Instalace vodovodního potrubí', desc: 'Rozvody studené a teplé vody 2.NP — PPR potrubí, provedena tlaková zkouška 6 bar / 30 min.', weather: '🌧 Déšť', temp: '9', workers: ['Martin Vlček', 'Josef Horáček'], createdAt: Date.now() - 518400000 },
-    { id: 'demo4', date: '2025-04-16', title: 'Bednění stropu 2.NP', desc: 'Montáž systémového bednění Doka pro strop 2.NP. Připraveno pro betonáž.', weather: '☀️ Slunečno', temp: '16', workers: ['Jan Kovář', 'Petr Malý', 'Karel Beneš', 'Tomáš Novotný'], createdAt: Date.now() - 604800000 },
-    { id: 'demo5', date: '2025-04-14', title: 'Armování stropní desky', desc: 'Uložení výztuže stropní desky 2.NP dle projektové dokumentace. Krytí výztuže 25 mm.', weather: '☁️ Oblačno', temp: '11', workers: ['Jan Kovář', 'Petr Malý', 'Martin Vlček'], createdAt: Date.now() - 777600000 },
+    { id: 'demo1', date: '2024-03-04', title: 'Zahájení stavby — přípravné práce', desc: 'Předání staveniště, vytyčení stavby, zřízení oplocení a zázemí pro pracovníky. Přivezena stavební buňka.', weather: '⛅ Polojasno', temp: '8', workers: ['Starý Matyáš', 'Petr Kameník', 'Tomáš Jirásek'], createdAt: Date.now() - 30*86400000 },
+    { id: 'demo2', date: '2024-03-08', title: 'Zemní práce — výkop základů', desc: 'Strojní výkop základových pasů dle PD. Hloubka výkopu 1,2 m, šířka 600 mm. Odvoz přebytečné zeminy.', weather: '☀️ Slunečno', temp: '11', workers: ['Starý Matyáš', 'Petr Kameník', 'Karel Holub', 'Jiří Smola'], createdAt: Date.now() - 26*86400000 },
+    { id: 'demo3', date: '2024-03-15', title: 'Betonáž základových pasů', desc: 'Betonáž základů — beton C16/20, celkem 18 m³. Vložena základová výztuž dle statiky.', weather: '☁️ Oblačno', temp: '9', workers: ['Starý Matyáš', 'Petr Kameník', 'Tomáš Jirásek', 'Karel Holub'], createdAt: Date.now() - 20*86400000 },
+    { id: 'demo4', date: '2024-03-22', title: 'Zdění obvodového zdiva 1.NP', desc: 'Zahájení zdění obvodových stěn 1.NP — tvárnice Porotherm 44, malta Porotherm TM. Dokončeno cca 40 % obvodového zdiva.', weather: '☀️ Slunečno', temp: '14', workers: ['Starý Matyáš', 'Petr Kameník', 'Jiří Smola', 'Karel Holub', 'Tomáš Jirásek'], createdAt: Date.now() - 13*86400000 },
+    { id: 'demo5', date: '2024-03-28', title: 'Dokončení zdění 1.NP + překlady', desc: 'Dokončení obvodového zdiva 1.NP, osazení překladů Porotherm KP 7 nad otvory oken a dveří.', weather: '🌧 Přeháňky', temp: '10', workers: ['Starý Matyáš', 'Petr Kameník', 'Jiří Smola'], createdAt: Date.now() - 7*86400000 },
   ];
   localStorage.setItem('sd_project', JSON.stringify(demoProject));
   localStorage.setItem('sd_entries', JSON.stringify(demoEntries));
