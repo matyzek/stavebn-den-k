@@ -34,11 +34,18 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 60px;
+      height: 80px;
       box-shadow: 0 2px 8px rgba(0,0,0,.2);
     }
-    header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+    header h1 { font-size: 1.3rem; display: flex; align-items: center; gap: 14px; }
     header h1 span.icon { font-size: 1.5rem; }
+    header h1 img.logo {
+      height: 62px;
+      width: auto;
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 8px;
+    }
     .header-project { font-size: .85rem; opacity: .9; cursor: pointer; border: 1px solid rgba(255,255,255,.4); border-radius: 6px; padding: 4px 10px; }
     .header-project:hover { background: rgba(255,255,255,.15); }
 
@@ -256,7 +263,7 @@
 <body>
 
 <header>
-  <h1><span class="icon">🏗️</span> Stavební deník</h1>
+  <h1><img src="logo.jpg" alt="I. Kamenická Stavební a Obchodní Firma s.r.o." class="logo"> Stavební deník</h1>
   <button class="header-project btn" onclick="openProjectModal()" id="project-name-display">Nastavit projekt ▾</button>
 </header>
 
