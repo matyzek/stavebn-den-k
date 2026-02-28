@@ -4,6 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Stavební deník</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#e67e22" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="St. Deník" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -620,6 +627,11 @@ document.getElementById('entry-modal').addEventListener('click', function(e) { i
 document.getElementById('project-modal').addEventListener('click', function(e) { if (e.target === this) closeProjectModal(); });
 
 init();
+
+// Registrace Service Workeru (PWA offline podpora)
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
 </script>
 </body>
 </html>
